@@ -1,0 +1,30 @@
+# This is a .gitignore file. 
+# Here goes everything that we *don't* want
+# in our repository. Everything else is 
+# (hopefully) valuable source code.
+#
+#
+# do not commit binaries, since they
+# change with every rebuild of the solution
+bin
+obj
+
+# documentation may be rebuilt by Doxygen
+doc
+
+# nuget-packages should be fetched
+# by calling >>> nuget restore
+packages
+
+# local solution files
+.vs
+*.user
+*.filters
+
+# vim backup files
+*.swp
+
+# don't bother with gnu-makefiles, since
+# we rely on msbuild instead
+Makefile
+
