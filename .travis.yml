@@ -1,0 +1,4 @@
+language: csharp
+solution: H5Ohm.sln
+mono:
+  - latest
