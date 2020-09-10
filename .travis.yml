@@ -2,6 +2,8 @@ language: csharp
 solution: H5Ohm.sln
 mono:
   - latest
+before_install:
+  - sudo apt-get -y install libhdf5-10 libhdf5-10-dbg
 install:
   - nuget restore H5Ohm.sln
   - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
