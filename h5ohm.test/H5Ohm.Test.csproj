@@ -57,7 +57,7 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\H5Ohm\H5Ohm.csproj">
+    <ProjectReference Include="..\h5ohm\H5Ohm.csproj">
       <Project>{6c0193fd-7fc9-4447-b3e1-a894a17163c3}</Project>
       <Name>H5Ohm</Name>
     </ProjectReference>
