@@ -2,3 +2,9 @@ language: csharp
 solution: H5Ohm.sln
 mono:
   - latest
+install:
+  - nuget restore H5Ohm.sln
+  - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
+script:
+  - msbuild /p:Configuration=Release /p:Platform="Any CPU" H5Ohm.sln
+  - mono ./testrunner/xunit.runner.console.2.4.1/tools/net461/xunit.console.exe ./h5ohm.test/bin/Release/H5Ohm.Test.dll

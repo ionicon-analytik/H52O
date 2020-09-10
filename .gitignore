@@ -15,6 +15,7 @@ doc
 # nuget-packages should be fetched
 # by calling >>> nuget restore
 packages
+testrunner
 
 # local solution files
 .vs
