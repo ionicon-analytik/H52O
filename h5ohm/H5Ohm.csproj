@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;HDF5_VER1_10</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -35,8 +35,8 @@
     <RootNamespace>H5Ohm</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HDF.PInvoke, Version=1.10.6.1, Culture=neutral, PublicKeyToken=18793c1fcffe58a3, processorArchitecture=MSIL">
-      <HintPath>..\packages\HDF.PInvoke.1.10.6.1\lib\HDF.PInvoke.dll</HintPath>
+    <Reference Include="HDF.PInvoke, Version=1.8.21.1, Culture=neutral, PublicKeyToken=18793c1fcffe58a3, processorArchitecture=MSIL">
+      <HintPath>..\packages\HDF.PInvoke.1.8.21.1\lib\HDF.PInvoke.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
