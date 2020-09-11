@@ -4,8 +4,10 @@ mono:
   - latest
 before_install:
   - sudo apt-get -y install libhdf5-10 libhdf5-10-dbg
-  - sudo ln -s --target-directory /usr/lib $(/sbin/ldconfig -p | grep libhdf5 | sed 's/^.*=> //')
-  - ls -l /usr/lib
+  - sudo ln -sT $(/sbin/ldconfig -p | grep libhdf5_serial.so | sed 's/^.*=> //') /usr/lib/libhdf5.so
+  - sudo ln -sT $(/sbin/ldconfig -p | grep libhdf5_serial_hl.so | sed 's/^.*=> //') /usr/lib/libhdf5_hl.so
+  - file /usr/lib/libhdf5.so
+  - file /usr/lib/libhdf5_hl.so
 install:
   - nuget restore H5Ohm.sln
   - nuget install xunit.runner.console -Version 2.4.1 -OutputDirectory testrunner
