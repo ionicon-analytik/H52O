@@ -43,10 +43,18 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="H5Attribute.cs" />
+    <Compile Include="H5DataSet.cs" />
     <Compile Include="H5File.cs" />
     <Compile Include="H5Group.cs" />
     <Compile Include="H5Library.cs" />
+    <Compile Include="H5Link.cs" />
     <Compile Include="H5Base.cs" />
+    <Compile Include="H5Space.cs" />
+    <Compile Include="H5Type.cs" />
+    <Compile Include="H5Object.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
