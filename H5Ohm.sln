@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5Ohm", "h5ohm\H5Ohm.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "H5Ohm.Test", "h5ohm.test\H5Ohm.Test.csproj", "{AE1F0AA7-ED81-4D5D-B898-05E97DBD92C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples", "Examples\Examples.csproj", "{FB070E4B-60D9-4C8A-BADC-9D0977896732}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AE1F0AA7-ED81-4D5D-B898-05E97DBD92C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE1F0AA7-ED81-4D5D-B898-05E97DBD92C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE1F0AA7-ED81-4D5D-B898-05E97DBD92C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB070E4B-60D9-4C8A-BADC-9D0977896732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB070E4B-60D9-4C8A-BADC-9D0977896732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB070E4B-60D9-4C8A-BADC-9D0977896732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB070E4B-60D9-4C8A-BADC-9D0977896732}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
