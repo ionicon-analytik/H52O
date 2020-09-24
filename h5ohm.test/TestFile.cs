@@ -186,6 +186,142 @@ namespace H5Ohm.Test
 
                 Assert.False(File.Exists(FILE.Path));
             }
+
+            class GuineaPig : H5Object
+            {
+#pragma warning disable 0649
+
+                public string1d stringset;
+                public dset2d<byte> byteset;
+
+#pragma warning restore 0649
+
+                public GuineaPig(H5Group grp) : base(grp)
+                {
+                }
+            }
+
+            [Fact]
+            public void ClosePreviouslyInitializedFile()
+            {
+                string path = Path.GetTempFileName();
+
+                H5File FILE = H5File.Open(path, mode: "w");
+
+                // initialize a test-object, which creates two datasets:
+                var PIG = new GuineaPig(FILE.Root);
+
+                Assert.True(PIG.stringset.ID > 0);
+                Assert.True(PIG.byteset.ID > 0);
+
+                // th test-object must be disposed of as this is not automatic:
+                PIG.Dispose();
+
+                FILE.Dispose();
+
+                // trying to re-open is a surefire way to check if FILE was closed correctly:
+                H5File FILE2 = H5File.Open(path, mode: "w");
+                FILE2.Dispose();
+
+                Assert.Equal((hid_t)0, PIG.stringset.ID);
+                Assert.Equal((hid_t)0, PIG.byteset.ID);
+                
+                File.Delete(path);
+
+                Assert.False(File.Exists(FILE.Path));
+            }
+
+
+#if AVOID_H5LIBRARY_ERRORS
+            [Fact(Skip="avoiding test-cases that provoke hdf5 library errors to get a clean result")]
+#else
+            [Fact]
+#endif
+            public void AttemptToWriteClosedFileFails()
+            {
+                string path = Path.GetTempFileName();
+
+                H5File FILE = H5File.Open(path, mode: "w");
+
+                // create some stuff..
+                H5Group GROUP = FILE.Root.SubGroup("foo", create: true);
+                GROUP.CreateDataset("bar", 1, new long[] { 7L }, typeof(byte));
+                dset1d<byte> DSET = GROUP["bar"] as dset1d<byte>;
+
+                Assert.NotNull(DSET);
+
+                DSET[3] = 5;
+
+                // close all H5Objects manually in this test-scenario:
+                GROUP.Dispose();
+                DSET.Dispose();
+                FILE.Dispose();
+
+                // the file.ID becomes the H5F.close() return value, which is often 
+                // (but not guaranteed to be) zero / non-negative:
+                Assert.Equal(0, FILE.ID);
+                Assert.Equal(0, FILE.Root.ID);
+                Assert.Equal(0, DSET.ID);
+                Assert.Equal(0, GROUP.ID);
+
+                Assert.Throws<InvalidOperationException>(() => FILE.Root["foo/bar"]);
+                Assert.Throws<InvalidOperationException>(() => DSET[5] = 3);
+                Assert.Throws<InvalidOperationException>(() => GROUP["bar"]);
+            }
+        }
+
+        public class TestReadonlyMode
+        {
+            [Fact]
+            public void CreateGroupFails()
+            {
+                using (var container = new TempH5FileContainer(filemode: "r"))
+                {
+                    H5File hf = container.Content();
+
+                    Assert.Throws<InvalidOperationException>(() => hf.Root.SubGroup("foo", create: true));
+
+                    Assert.Throws<InvalidOperationException>(() => hf.Root.CreateGroup("bar"));
+                }
+            }
+
+            [Fact]
+            public void CreateDatasetFails()
+            {
+                using (var container = new TempH5FileContainer(filemode: "r"))
+                {
+                    H5File hf = container.Content();
+
+                    Assert.Throws<InvalidOperationException>(() => hf.Root.CreateDataset("zoom", 2, new long[] { 3, 4 }, typeof(float)));
+                }
+            }
+
+            class GuineaPig : H5Object
+            {
+#pragma warning disable 0649
+
+                public string1d doomed;
+                public dset1d<byte> to_fail;
+
+#pragma warning restore 0649
+
+                public GuineaPig(H5Group grp) : base(grp)
+                {
+                }
+            }
+
+            [Fact]
+            public void InitObjectFails()
+            {
+                using (var container = new TempH5FileContainer(filemode: "r"))
+                {
+                    H5File hf = container.Content();
+                
+                    Assert.False(hf.Root.IsWritable);
+
+                    Assert.Throws<InvalidOperationException>(() => new GuineaPig(hf.Root));
+                }
+            }
         }
     }
 }

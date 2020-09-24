@@ -53,7 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestAttribute.cs" />
+    <Compile Include="TestDataset.cs" />
     <Compile Include="TestFile.cs" />
+    <Compile Include="TestGroup.cs" />
+    <Compile Include="TestLibrary.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
