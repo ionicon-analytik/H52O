@@ -259,10 +259,10 @@ namespace H5Ohm.Test
 
                 // the file.ID becomes the H5F.close() return value, which is often 
                 // (but not guaranteed to be) zero / non-negative:
-                Assert.Equal(0, FILE.ID);
-                Assert.Equal(0, FILE.Root.ID);
-                Assert.Equal(0, DSET.ID);
-                Assert.Equal(0, GROUP.ID);
+                Assert.Equal((H5Ohm.hid_t)0, FILE.ID);
+                Assert.Equal((H5Ohm.hid_t)0, FILE.Root.ID);
+                Assert.Equal((H5Ohm.hid_t)0, DSET.ID);
+                Assert.Equal((H5Ohm.hid_t)0, GROUP.ID);
 
                 Assert.Throws<InvalidOperationException>(() => FILE.Root["foo/bar"]);
                 Assert.Throws<InvalidOperationException>(() => DSET[5] = 3);

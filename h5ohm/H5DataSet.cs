@@ -1011,7 +1011,7 @@ namespace H5Ohm
     class index_Enumerable<T> : IEnumerable<T>
     {
         Func<long, T> indexer;
-        long stop, index = -1;
+        long stop;
 
         public index_Enumerable(Func<long, T> indexer, long stop) { this.indexer = indexer; this.stop = stop; }
         public IEnumerator<T> GetEnumerator() { return new index_Enumerator<T>(indexer, stop); }

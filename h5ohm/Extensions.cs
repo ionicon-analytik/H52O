@@ -27,49 +27,6 @@ namespace H5Ohm.Extensions
 {
     public static class EnumerableExtensions
     {
-        public static bool IsNull<T>(this IEnumerable<T> instance)
-        {
-            return instance == null;
-        }
-
-        public static bool IsEmpty<T>(this IEnumerable<T> instance)
-        {
-            if(instance.IsNull())
-                throw new NullReferenceException();
-            return instance.Count() == 0;
-        }
-
-        public static bool IsNullOrEmpty<T>(this IEnumerable<T> instance)
-        {
-            return instance.IsNull() || instance.IsEmpty(); 
-        }
-
-        public static bool HasSameLengthAs<T, U>(this IEnumerable<T> instance, IEnumerable<U> array)
-        {
-            if (instance.IsNull())
-                throw new NullReferenceException();
-            if(array.IsNull())
-                throw new ArgumentNullException();
-            return instance.Count() == array.Count();
-        }
-
-        public static List<string> ConvertToStringList(
-            this IEnumerable<double> instance, string format = "", IFormatProvider formatProvider = null)
-        {
-            if (instance.IsNull())
-                throw new NullReferenceException();
-            List<string> converted = new List<string>();
-            var enumerator = instance.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                string toStringResult = (format == "" && formatProvider == null)?
-                    enumerator.Current.ToString() : 
-                    enumerator.Current.ToString(format, formatProvider);
-                converted.Add(toStringResult);
-            }
-            return converted;
-        }
-
         /// <summary>
         /// Applies a function to each element of the sequence.
         /// </summary>
@@ -102,15 +59,13 @@ namespace H5Ohm.Extensions
 
     public static class ArrayExtensions
     {
+        /// <summary>
+        /// Fill an array with a given default value.
+        /// </summary>
         public static void Fill<T>(this T[] array, T value)
         {
             for (int i = 0; i < array.Length; i++)
                 array[i] = value;
-        }
-
-        public static double[] ToDouble(this float[] instance)
-        {
-            return Array.ConvertAll(instance, x => (double)x);
         }
     }
 }
