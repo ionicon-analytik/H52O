@@ -126,6 +126,35 @@ namespace H5Ohm
         }
 
         /// <summary>
+        /// Open a H5Group at `location` relative to the hdf5 root group, 
+        /// creating subgroups as necessary.
+        /// </summary>
+        public H5Group MakeGroups(string location)
+        {
+            location = location.Trim('/');
+
+            H5Group tmp, node = null;
+            foreach (string subloc in location.Split('/'))
+            {
+                if (node == null)
+                    node = Root.SubGroup(subloc, create: true);
+                else
+                {
+                    // note: if we could rely on the GC, we
+                    // wouldn't need a temporary variable..
+                    tmp = node.SubGroup(subloc, create: true);
+                    node.Dispose();
+                    node = tmp;
+                }
+            }
+            // re-open the group for its '.Key' set to our 'location'..
+            node.Dispose();
+            node = Root.SubGroup(location);
+
+            return node;
+        }
+
+        /// <summary>
         /// Close the file to release the file handle.
         /// </summary>
         public override void Dispose()
