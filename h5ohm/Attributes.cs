@@ -54,7 +54,11 @@ namespace H5Ohm
     {
         public string name;
         public Type primitive;
-        public AttributeAttribute(string location, Type createPrimitive = null) { name = location; primitive = createPrimitive; }
+        public object default_;
+        public AttributeAttribute(string location, Type createPrimitive = null, object defaultValue = null)
+        {
+            name = location; primitive = createPrimitive; default_ = defaultValue;
+        }
     }
 
     /// <summary>

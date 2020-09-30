@@ -38,6 +38,8 @@ namespace H5Ohm
 
         public H5Object(H5Group group)
         {
+            Attr = new ReadOnlyDictionary<string, H5Attribute>(new Dictionary<string, H5Attribute>());
+
             Initialize(group);
         }
 
@@ -51,41 +53,24 @@ namespace H5Ohm
         /// </summary> 
         private void Initialize(H5Group grp)
         {
-            var collectedAttrs = new Dictionary<string, H5Attribute>();
-            foreach (object attr in this.GetType().GetCustomAttributes(inherit: true))
-            {
-                if (attr.GetType() == typeof(AttributeAttribute))
-                {
-                    string name = ((AttributeAttribute)attr).name;
-                    try
-                    {
-                        collectedAttrs.Add(name, grp.GetAttribute(name));
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        Type primitive;
-                        if ((primitive = ((AttributeAttribute)attr).primitive) != null)
-                            collectedAttrs.Add(name, grp.SetAttribute(name, primitive));
-                    }
-                }
-            }
+            var collectedH5Attrs = new Dictionary<string, H5Attribute>();
 
-            var pendingAttrs = new List<Tuple<string, Type>>();
+            var pendingAttrs = new List<Tuple<string, Type, object>>();
             var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
-            foreach (var field in this.GetType().GetFields(flags))
+            foreach (FieldInfo dsetInfo in this.GetType().GetFields(flags))
             {
                 // skip fields that don't interest us here..
-                if (!field.FieldType.IsSubclassOf(typeof(H5DataSet)))
+                if (!dsetInfo.FieldType.IsSubclassOf(typeof(H5DataSet)))
                     continue;
 
                 // ..as well as those that have been already defined:
-                if (!(field.GetValue(this) == null))
+                if (!(dsetInfo.GetValue(this) == null))
                     continue;
 
                 // set default dataset creation parameters..
-                string key = field.Name;
+                string key = dsetInfo.Name;
                 bool readonli = false;
-                Match match = Regex.Match(field.FieldType.Name, @".*([1-3])d");
+                Match match = Regex.Match(dsetInfo.FieldType.Name, @".*([1-3])d");
                 int rank = Int32.Parse(match.Groups[1].Value);
                 long[] dims = new long[rank];
                 long[] maxdims = new long[rank];
@@ -94,7 +79,7 @@ namespace H5Ohm
 
                 // ..which may be overridden by Attributes:
                 pendingAttrs.Clear();
-                foreach (object attr in field.GetCustomAttributes(inherit: false))
+                foreach (object attr in dsetInfo.GetCustomAttributes(inherit: false))
                 {
                     if (attr.GetType() == typeof(LocationAttribute))
                         key = ((LocationAttribute)attr).key;
@@ -105,10 +90,11 @@ namespace H5Ohm
                     else if (attr.GetType() == typeof(MaximumShapeAttribute))
                         maxdims = ((MaximumShapeAttribute)attr).dims;
                     else if (attr.GetType() == typeof(AttributeAttribute))
-                        pendingAttrs.Add(new Tuple<string, Type>(
+                        pendingAttrs.Add(new Tuple<string, Type, object>(
                             ((AttributeAttribute)attr).name,
-                            ((AttributeAttribute)attr).primitive)
-                            );
+                            ((AttributeAttribute)attr).primitive,
+                            ((AttributeAttribute)attr).default_
+                            ));
                 }
 
                 // initialize the dataset..
@@ -123,7 +109,7 @@ namespace H5Ohm
                 }
                 else
                 {
-                    Type dtype, field_type = field.FieldType;
+                    Type dtype, field_type = dsetInfo.FieldType;
                     if (field_type.IsGenericType)
                         dtype = field_type.GenericTypeArguments[0];
                     else if (field_type == typeof(string1d))
@@ -136,28 +122,56 @@ namespace H5Ohm
                     dset = grp.CreateDataset(key, rank, dims, dtype, maxdims);
                 }
 
-                // add hdf5 attributes..
+                // add pending hdf5 attributes..
                 foreach (var tup in pendingAttrs)
                 {
-                    string name = tup.Item1;
-                    Type primitive = tup.Item2;
-                    try
-                    {
-                        collectedAttrs.Add(name, dset.GetAttribute(name));
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        if (primitive != null)
-                            collectedAttrs.Add(name, grp.SetAttribute(name, primitive));
-                    }
+                    CollectAttributeMaybe(
+                        dset,
+                        tup.Item1,
+                        tup.Item2,
+                        tup.Item3
+                    );
                 }
 
-                // finally, set the subject's field to the new object.
-                // Note that, even if `dset` is declared as `object`, it
-                // will be of type `field.FieldType`:
-                field.SetValue(this, dset);
+                // finally, set this instance's field to the new object.
+                // Note that, even if `dset` is declared as `object`, it will be
+                // of type `field.FieldType`:
+                dsetInfo.SetValue(this, dset);
             }
-            Attr = new ReadOnlyDictionary<string, H5Attribute>(collectedAttrs);
+
+            foreach (object attr in this.GetType().GetCustomAttributes(inherit: true))
+            {
+                if (attr.GetType() == typeof(AttributeAttribute))
+                {
+                    CollectAttributeMaybe(
+                        grp,
+                        ((AttributeAttribute)attr).name,
+                        ((AttributeAttribute)attr).primitive,
+                        ((AttributeAttribute)attr).default_
+                    );
+                }
+            }
+        }
+
+        private void CollectAttributeMaybe(H5Attributable obj, string name, Type primitive, object default_)
+        {
+            try
+            {
+                H5Attribute candidate = obj.GetAttribute(name);
+                if (primitive != null && primitive != candidate.PrimitiveType)
+                    throw new InvalidOperationException($"can't overwrite existing attribute '{name}' of Type `{candidate.PrimitiveType}` with `{primitive}`");
+            }
+            catch (KeyNotFoundException)
+            {
+                if (primitive == null && default_ == null)
+                    return;
+
+                obj.SetAttribute(name, primitive, default_);
+            }
+            // "append" to the read-only dictionary (not pretty but still)..
+            var collected = new Dictionary<string, H5Attribute>(Attr);
+            collected.Add(name, obj.GetAttribute(name));
+            Attr = new ReadOnlyDictionary<string, H5Attribute>(collected);
         }
 
         public virtual void Dispose()
@@ -168,12 +182,8 @@ namespace H5Ohm
                 if (field.GetValue(this) is IDisposable h5obj)
                     h5obj?.Dispose();
             }
-
-            if (Attr != null)
-            {
-                foreach (IDisposable attr in Attr.Values)
-                    attr.Dispose();
-            }
+            foreach (IDisposable attr in Attr.Values)
+                attr.Dispose();
         }
     }
 }

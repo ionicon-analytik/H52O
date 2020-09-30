@@ -45,7 +45,7 @@ namespace H5Ohm
     /// example, the `dset2d<T>` supports multidimensional indexing, 
     /// while `dset1d<T>` does not.
     /// </remarks>
-    public abstract class H5DataSet : H5Base
+    public abstract class H5DataSet : H5Attributable
     {
         /// <summary>
         /// The number of dimensions. 
@@ -243,28 +243,6 @@ namespace H5Ohm
                 throw new InvalidOperationException("operation on closed dataset");
 
             return H5Type.FromDataset(ID);
-        }
-
-        /// <summary>
-        /// Return the hdf5 *attribute* by `name` of this dataset.
-        /// </summary>
-        public H5Attribute GetAttribute(string name)
-        {
-            if (!H5Attribute.Exists(ID, name))
-                throw new KeyNotFoundException(name);
-
-            return H5Attribute.FromID(H5Attribute.Open(ID, name));
-        }
-
-        /// <summary>
-        /// Add a hdf5 *attribute* to this dataset.
-        /// </summary>
-        public H5Attribute SetAttribute(string name, Type primitive)
-        {
-            if (H5Attribute.Exists(ID, name))
-                throw new InvalidOperationException($"attribute exists ({name})");
-
-            return H5Attribute.Create(ID, name, primitive);
         }
 
         /// <summary>

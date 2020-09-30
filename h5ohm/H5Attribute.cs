@@ -19,7 +19,8 @@
 * SOFTWARE.
 */
 using System;
-using System.Runtime.InteropServices;  // GCHandle
+using System.Collections.Generic;       // KeyNotFoundException
+using System.Runtime.InteropServices;   // GCHandle
 
 using HDF.PInvoke;
 
@@ -50,8 +51,11 @@ namespace H5Ohm
             return H5A.open(loc_id, name, H5P.DEFAULT);
         }
 
-        internal static H5Attribute Create(hid_t loc_id, string name, Type primitive)
+        internal static H5Attribute Create(hid_t loc_id, string name, Type primitive, object default_ = null)
         {
+            if (primitive == null)
+                primitive = default_.GetType();  // may throw NullReferenceException, which is informational enough
+
             int rank = 1;
             long[] dims = new long[1] { 1 };
             hid_t id;
@@ -61,7 +65,11 @@ namespace H5Ohm
                 if ((id = H5A.create(loc_id, name, dtype.ID, space.ID, H5P.DEFAULT, H5P.DEFAULT)) < 0)
                     throw new H5LibraryException($"H5A.create() returned ({id})");
             }
-            return FromID(id);
+            H5Attribute rv = FromID(id);
+            if (default_ != null)
+                rv.Write(default_);
+
+            return rv;
         }
 
         public static bool Exists(hid_t loc_id, string name)
@@ -175,7 +183,7 @@ namespace H5Ohm
         }
 
         /// <summary>
-        /// Read the value stored in this *attribute*.
+        /// Read the value stored in this *attribute* and box it as an `object`.
         /// </summary>
         public object Read()
         {
@@ -193,20 +201,21 @@ namespace H5Ohm
         }
 
         /// <summary>
-        /// Store a `value` in this *attribute*.
+        /// Store a `value` in this *attribute*. The `object` is unboxed to this attribute's
+        /// `.PrimitiveType`. This may throw an `InvalidCastException`.
         /// </summary>
-        public void Read(object value)
+        public void Write(object value)
         {
             using (H5Type dtype = GetDType())
             {
                 if (dtype.PrimitiveType == typeof(System.String)) Writes((string)value);
-                if (dtype.PrimitiveType == typeof(System.Double)) Write((double)value);
-                if (dtype.PrimitiveType == typeof(System.Single)) Write((float)value);
-                if (dtype.PrimitiveType == typeof(System.Byte)) Write((byte)value);
-                if (dtype.PrimitiveType == typeof(System.Int64)) Write((long)value);
-                if (dtype.PrimitiveType == typeof(System.Int32)) Write((int)value);
-
-                throw new NotImplementedException(dtype.PrimitiveType.ToString());
+                else if (dtype.PrimitiveType == typeof(System.Double)) Write((double)value);
+                else if (dtype.PrimitiveType == typeof(System.Single)) Write((float)value);
+                else if (dtype.PrimitiveType == typeof(System.Byte)) Write((byte)value);
+                else if (dtype.PrimitiveType == typeof(System.Int64)) Write((long)value);
+                else if (dtype.PrimitiveType == typeof(System.Int32)) Write((int)value);
+                else
+                    throw new NotImplementedException(dtype.PrimitiveType.ToString());
             }
         }
 
@@ -216,6 +225,40 @@ namespace H5Ohm
 
             if (ID > 0)
                 ID = H5A.close(ID);
+        }
+    }
+
+    public abstract class H5Attributable : H5Base
+    {
+        protected H5Attributable(hid_t hid) : base(hid)
+        {
+        }
+
+        /// <summary>
+        /// Return the hdf5 *attribute* by `name`. May throw a
+        /// `KeyNotFoundException` if no such name exists.
+        /// </summary>
+        public H5Attribute GetAttribute(string name)
+        {
+            if (!H5Attribute.Exists(ID, name))
+                throw new KeyNotFoundException(name);
+
+            return H5Attribute.FromID(H5Attribute.Open(ID, name));
+        }
+
+        /// <summary>
+        /// Add a hdf5 *attribute*. The `primitive` argument is mandatory to
+        /// specify the `Type` to be stored in this *attribute*. If a
+        /// `default_` value is given, it is written to the hdf5 file
+        /// immediately. Note, that an existing *attribute* will not be
+        /// overwritten.
+        /// </summary>
+        public void SetAttribute(string name, Type primitive, object default_ = null)
+        {
+            if (H5Attribute.Exists(ID, name))
+                throw new InvalidOperationException($"attribute exists ({name})");
+
+            H5Attribute.Create(ID, name, primitive, default_);
         }
     }
 }

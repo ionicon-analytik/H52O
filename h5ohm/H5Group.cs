@@ -31,7 +31,7 @@ namespace H5Ohm
     /// <summary>
     /// Contains the Hdf5 hierarchy of datasets and a sub-Groups.
     /// </summary>
-    public class H5Group : H5Base
+    public class H5Group : H5Attributable
     {
         public readonly string Key;
         public readonly bool IsWritable;
@@ -200,28 +200,6 @@ namespace H5Ohm
         public void DeleteGroup(string key)
         {
             H5Link.Delete(ID, key);
-        }
-
-        /// <summary>
-        /// Return the hdf5 *attribute* by `name` of this group.
-        /// </summary>
-        public H5Attribute GetAttribute(string name)
-        {
-            if (!H5Attribute.Exists(ID, name))
-                throw new KeyNotFoundException(name);
-
-            return H5Attribute.FromID(H5Attribute.Open(ID, name));
-        }
-
-        /// <summary>
-        /// Add a hdf5 *attribute* to this group.
-        /// </summary>
-        public H5Attribute SetAttribute(string name, Type primitive)
-        {
-            if (H5Attribute.Exists(ID, name))
-                throw new InvalidOperationException($"attribute exists ({name})");
-
-            return H5Attribute.Create(ID, name, primitive);
         }
 
         public override void Dispose()
