@@ -45,7 +45,7 @@ namespace H5Ohm
     /// example, the `dset2d<T>` supports multidimensional indexing, 
     /// while `dset1d<T>` does not.
     /// </remarks>
-    public abstract class H5DataSet : H5Attributable
+    public abstract class H5DataSet : H5Base
     {
         /// <summary>
         /// The number of dimensions. 
@@ -243,6 +243,30 @@ namespace H5Ohm
                 throw new InvalidOperationException("operation on closed dataset");
 
             return H5Type.FromDataset(ID);
+        }
+
+        /// <summary>
+        /// Return the hdf5 *attribute* by `name` of this dataset.
+        /// </summary>
+        public H5Attribute GetAttribute(string name)
+        {
+            if (!H5Attribute.Exists(ID, name))
+                throw new KeyNotFoundException(name);
+
+            return H5Attribute.FromID(H5Attribute.Open(ID, name));
+        }
+
+        /// <summary>
+        /// Add a hdf5 *attribute* to this dataset. The `Type` argument is mandatory.
+        /// If a `default_` value is given, it is written to the hdf5 file immediately.
+        /// Note, that an existing *attribute* will not be overwritten.
+        /// </summary>
+        public H5Attribute SetAttribute(string name, Type primitive, object default_ = null)
+        {
+            if (H5Attribute.Exists(ID, name))
+                throw new InvalidOperationException($"attribute exists ({name})");
+
+            return H5Attribute.Create(ID, name, primitive, default_);
         }
 
         /// <summary>
@@ -480,20 +504,18 @@ namespace H5Ohm
             return new index_Enumerable<string>((i) => this[i], Dims[0]);
         }
 
-        [Obsolete("use string1d.Elements() instead", error: false)]
         public IEnumerator<string> GetEnumerator()
         {
             return new index_Enumerator<string>((i) => this[i], Dims[0]);
         }
 
-        [Obsolete("use string1d.Elements() instead", error: false)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
     }
 
-    public class string2d : H5DataSet, IEnumerable<string[]>
+    public class string2d : H5DataSet
     {
         public string2d(hid_t dset_id) : base(dset_id) { }
     
@@ -677,18 +699,6 @@ namespace H5Ohm
                 foreach (string elm in row)
                     yield return elm;
         }
-
-        [Obsolete("use dset2d<string[]>.Rows() instead", error: false)]
-        public IEnumerator<string[]> GetEnumerator()
-        {
-            return Rows().GetEnumerator();
-        }
-
-        [Obsolete("use dset2d<string>.Rows() instead", error: false)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
     }
 
     public class dset1d<T> : H5DataSet, IEnumerable<T>
@@ -743,20 +753,18 @@ namespace H5Ohm
             return new index_Enumerable<T>((i) => this[i], Dims[0]);
         }
 
-        [Obsolete("use dset1d<T>.Elements() instead", error: false)]
         public IEnumerator<T> GetEnumerator()
         {
             return new index_Enumerator<T>((i) => this[i], Dims[0]);
         }
 
-        [Obsolete("use dset1d<T>.Elements() instead", error: false)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
     }
 
-    public class dset2d<T> : H5DataSet, IEnumerable<T[]>
+    public class dset2d<T> : H5DataSet
     {
         public dset2d(hid_t dset_id) : base(dset_id) { }
 
@@ -900,18 +908,6 @@ namespace H5Ohm
             foreach (T[] row in Rows())
                 foreach (T elm in row)
                     yield return elm;
-        }
-
-        [Obsolete("use dset2d<T[]>.Rows() instead", error: false)]
-        public IEnumerator<T[]> GetEnumerator()
-        {
-            return Rows().GetEnumerator();
-        }
-
-        [Obsolete("use dset2d<T[]>.Rows() instead", error: false)]
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
         }
     }
     

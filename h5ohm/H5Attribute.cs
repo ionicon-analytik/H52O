@@ -227,38 +227,4 @@ namespace H5Ohm
                 ID = H5A.close(ID);
         }
     }
-
-    public abstract class H5Attributable : H5Base
-    {
-        protected H5Attributable(hid_t hid) : base(hid)
-        {
-        }
-
-        /// <summary>
-        /// Return the hdf5 *attribute* by `name`. May throw a
-        /// `KeyNotFoundException` if no such name exists.
-        /// </summary>
-        public H5Attribute GetAttribute(string name)
-        {
-            if (!H5Attribute.Exists(ID, name))
-                throw new KeyNotFoundException(name);
-
-            return H5Attribute.FromID(H5Attribute.Open(ID, name));
-        }
-
-        /// <summary>
-        /// Add a hdf5 *attribute*. The `primitive` argument is mandatory to
-        /// specify the `Type` to be stored in this *attribute*. If a
-        /// `default_` value is given, it is written to the hdf5 file
-        /// immediately. Note, that an existing *attribute* will not be
-        /// overwritten.
-        /// </summary>
-        public void SetAttribute(string name, Type primitive, object default_ = null)
-        {
-            if (H5Attribute.Exists(ID, name))
-                throw new InvalidOperationException($"attribute exists ({name})");
-
-            H5Attribute.Create(ID, name, primitive, default_);
-        }
-    }
 }

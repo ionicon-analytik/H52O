@@ -54,6 +54,26 @@ namespace H5Ohm
         private void Initialize(H5Group grp)
         {
             var collectedH5Attrs = new Dictionary<string, H5Attribute>();
+            foreach (object attr in this.GetType().GetCustomAttributes(inherit: true))
+            {
+                if (attr.GetType() == typeof(AttributeAttribute))
+                {
+                    string name = ((AttributeAttribute)attr).name;
+                    try
+                    {
+                        collectedH5Attrs.Add(name, grp.GetAttribute(name));
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        Type primitive = ((AttributeAttribute)attr).primitive;
+                        object default_ = ((AttributeAttribute)attr).default_;
+                        if (primitive == null && default_ == null)
+                            continue;
+
+                        collectedH5Attrs.Add(name, grp.SetAttribute(name, primitive, default_));
+                    }
+                }
+            }
 
             var pendingAttrs = new List<Tuple<string, Type, object>>();
             var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy;
@@ -125,12 +145,20 @@ namespace H5Ohm
                 // add pending hdf5 attributes..
                 foreach (var tup in pendingAttrs)
                 {
-                    CollectAttributeMaybe(
-                        dset,
-                        tup.Item1,
-                        tup.Item2,
-                        tup.Item3
-                    );
+                    string name = tup.Item1;
+                    Type primitive = tup.Item2;
+                    object default_ = tup.Item3;
+                    try
+                    {
+                        collectedH5Attrs.Add(name, dset.GetAttribute(name));
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                        if (primitive == null && default_ == null)
+                            continue;
+
+                        collectedH5Attrs.Add(name, dset.SetAttribute(name, primitive, default_));
+                    }
                 }
 
                 // finally, set this instance's field to the new object.
@@ -138,40 +166,7 @@ namespace H5Ohm
                 // of type `field.FieldType`:
                 dsetInfo.SetValue(this, dset);
             }
-
-            foreach (object attr in this.GetType().GetCustomAttributes(inherit: true))
-            {
-                if (attr.GetType() == typeof(AttributeAttribute))
-                {
-                    CollectAttributeMaybe(
-                        grp,
-                        ((AttributeAttribute)attr).name,
-                        ((AttributeAttribute)attr).primitive,
-                        ((AttributeAttribute)attr).default_
-                    );
-                }
-            }
-        }
-
-        private void CollectAttributeMaybe(H5Attributable obj, string name, Type primitive, object default_)
-        {
-            try
-            {
-                H5Attribute candidate = obj.GetAttribute(name);
-                if (primitive != null && primitive != candidate.PrimitiveType)
-                    throw new InvalidOperationException($"can't overwrite existing attribute '{name}' of Type `{candidate.PrimitiveType}` with `{primitive}`");
-            }
-            catch (KeyNotFoundException)
-            {
-                if (primitive == null && default_ == null)
-                    return;
-
-                obj.SetAttribute(name, primitive, default_);
-            }
-            // "append" to the read-only dictionary (not pretty but still)..
-            var collected = new Dictionary<string, H5Attribute>(Attr);
-            collected.Add(name, obj.GetAttribute(name));
-            Attr = new ReadOnlyDictionary<string, H5Attribute>(collected);
+            Attr = new ReadOnlyDictionary<string, H5Attribute>(collectedH5Attrs);
         }
 
         public virtual void Dispose()
