@@ -53,3 +53,9 @@ to work, one must define `HDF5_VER1_10` in the VisualStudio build
 options. This takes care of the [API changes](https://github.com/HDFGroup/HDF.PInvoke/wiki/Important-Differences-between-HDF5-1.8-and-1.10)
 introduced by the HDF group. It also allows for using the neat single-write 
 multi-read feature by adding the `sw` and `mr` file modes to the `H5File` class.
+
+license
+-------------------------
+
+`H5Ohm` is licensed under the MIT License. 
+
