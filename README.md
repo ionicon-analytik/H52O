@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/lefi7z/h5ohm.svg?branch=master)](https://travis-ci.com/lefi7z/h5ohm)
+
 H5Ohm - the Object to Hierarchy Mapper
 =========================
 
