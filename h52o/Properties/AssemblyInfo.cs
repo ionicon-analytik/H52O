@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("H52O")]
-[assembly: AssemblyDescription("HDF5 Object - hierarchy mapper")]
+[assembly: AssemblyDescription("HDF5 to Object mapper")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("HDF5 Object - hierarchy mapper")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("Ionicon Analytik Ges.m.b.H.")]
+[assembly: AssemblyProduct("HDF5 to Object mapper")]
+[assembly: AssemblyCopyright("Copyright © Ionicon Analytik Ges.m.b.H. 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
