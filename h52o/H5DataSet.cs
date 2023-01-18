@@ -400,14 +400,18 @@ namespace H52O
 
         public void Flush()
         {
-#if HDF5_VER1_10
+#if HDF5_VER1_8
+            // not implemented...
+#else
             H5D.flush(ID);
 #endif
         }
 
         public void Refresh()
         {
-#if HDF5_VER1_10
+#if HDF5_VER1_8
+            // not implemented...
+#else
             H5D.refresh(ID);
 #endif
         }
@@ -886,7 +890,7 @@ namespace H52O
             }
         }
 
-#if HDF5_VER1_10
+#if !HDF5_VER1_8
         public void Append(T[] values)
         {
             uint axis = 0;

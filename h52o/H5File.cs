@@ -79,12 +79,12 @@ namespace H52O
 
             hid_t fid;
             hid_t fapl;
-#if HDF5_VER1_10
+#if HDF5_VER1_8
+            fapl = H5P.DEFAULT;
+#else
             // set the library version bounds conservatively when using SWMR..
             fapl = H5P.create(H5P.FILE_ACCESS);
             H5P.set_libver_bounds(fapl, H5F.libver_t.LATEST, H5F.libver_t.LATEST);
-#else
-            fapl = H5P.DEFAULT;
 #endif
             switch (mode)
             {
@@ -94,7 +94,7 @@ namespace H52O
                 case "r+":
                     fid = H5F.open(path, H5F.ACC_RDWR);
                     break;
-#if HDF5_VER1_10
+#if !HDF5_VER1_8
                 case "mr":
                     fid = H5F.open(path, H5F.ACC_RDONLY | H5F.ACC_SWMR_READ);
                     break;

@@ -143,10 +143,10 @@ namespace H52O
             List<string> rv = new List<string>();
 
             // the callback function, called for each item in the iteration
-#if HDF5_VER1_10
-            H5L.iterate_t op_fun = (long loc, IntPtr name, ref H5L.info_t info, IntPtr op_data) =>
-#else
+#if HDF5_VER1_8
             H5L.iterate_t op_fun = (int loc, IntPtr name, ref H5L.info_t info, IntPtr op_data) =>
+#else
+            H5L.iterate_t op_fun = (long loc, IntPtr name, ref H5L.info_t info, IntPtr op_data) =>
 #endif
             {
                 H5O.info_t oinfo = new H5O.info_t();

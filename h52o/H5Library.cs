@@ -31,25 +31,25 @@ namespace H52O
     /// </summary>
     public struct hid_t
     {
-#if HDF5_VER1_10
-        private System.Int64 id;
-#else
+#if HDF5_VER1_8
         private System.Int32 id;
+#else
+        private System.Int64 id;
 #endif
 
-#if HDF5_VER1_10
-        public static implicit operator Int64(hid_t id)
-#else
+#if HDF5_VER1_8
         public static implicit operator Int32(hid_t id)
+#else
+        public static implicit operator Int64(hid_t id)
 #endif
         {
             return id.id;
         }
 
-#if HDF5_VER1_10
-        public static implicit operator hid_t(Int64 id)
-#else
+#if HDF5_VER1_8
         public static implicit operator hid_t(Int32 id)
+#else
+        public static implicit operator hid_t(Int64 id)
 #endif
         {
             return new hid_t() { id = id };

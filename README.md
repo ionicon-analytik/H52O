@@ -67,16 +67,17 @@ using (H5File hf = H5File.Open(myfile, mode: "r"))
 hdf5 version considerations
 -------------------------
 
-The build is currently being unit-tested by travis against hdf5 v1.8.16,
-the version shipped with Ubuntu 16.01 LTS (Xenial). 
-However, hdf5 v1.10 and beyond is also supported. In order for this
-to work, one must define `HDF5_VER1_10` in the VisualStudio build 
+The build is currently being unit-tested against hdf5 v1.10. 
+However, hdf5 v1.8 is also supported. In order for this
+to work, one must define `HDF5_VER1_8` in the VisualStudio build 
 options. This takes care of the [API changes](https://github.com/HDFGroup/HDF.PInvoke/wiki/Important-Differences-between-HDF5-1.8-and-1.10)
-introduced by the HDF group. It also allows for using the neat single-write 
+introduced by the HDF group. Using hdf5 v1.10 allows for using the neat single-write 
 multi-read feature by adding the `sw` and `mr` file modes to the `H5File` class.
 
 license
 -------------------------
 
 `H52O` is licensed under the MIT License. 
+See [The HDF Group](https://www.hdfgroup.org/licenses) for licensing the hdf5
+binaries.
 
