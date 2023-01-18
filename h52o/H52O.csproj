@@ -1,8 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -46,11 +44,14 @@
     <Title>HDF5 to Object mapper</Title>
     <PackageProjectUrl>https://github.com/ionicon-analytik/H52O</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ionicon-analytik/H52O</RepositoryUrl>
-    <AssemblyVersion></AssemblyVersion>
-    <FileVersion></FileVersion>
+    <AssemblyVersion>
+    </AssemblyVersion>
+    <FileVersion>
+    </FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Version>0.9.0.0</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Properties\**" />
@@ -81,31 +82,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
+    <PackageReference Include="HDF.PInvoke">
+      <Version>1.10.6.1</Version>
+    </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />
   </ProjectExtensions>
-  <Import Project="..\packages\HDF.PInvoke.1.8.21.1\build\HDF.PInvoke.targets" Condition="Exists('..\packages\HDF.PInvoke.1.8.21.1\build\HDF.PInvoke.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\HDF.PInvoke.1.8.21.1\build\HDF.PInvoke.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\HDF.PInvoke.1.8.21.1\build\HDF.PInvoke.targets'))" />
-  </Target>
-  <ItemGroup>
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5.pdb" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5_hl.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5_hl.pdb" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\szip.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\zlib.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5.pdb" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5_hl.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5_hl.pdb" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\szip.dll" />
-    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\zlib.dll" />
-  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
