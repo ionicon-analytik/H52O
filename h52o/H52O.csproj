@@ -75,13 +75,13 @@
     <Compile Include="H5Object.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="HDF.PInvoke" Version="1.10.6.1" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HDF.PInvoke.1.10" Version="1.10.612" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -94,4 +94,18 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\HDF.PInvoke.1.8.21.1\build\HDF.PInvoke.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\HDF.PInvoke.1.8.21.1\build\HDF.PInvoke.targets'))" />
   </Target>
+  <ItemGroup>
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5.pdb" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5_hl.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\hdf5_hl.pdb" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\szip.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin32\zlib.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5.pdb" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5_hl.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\hdf5_hl.pdb" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\szip.dll" />
+    <None Remove="D:\code\h5ohm\packages\HDF.PInvoke.1.8.21.1\build\bin64\zlib.dll" />
+  </ItemGroup>
 </Project>
