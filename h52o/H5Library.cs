@@ -24,7 +24,7 @@ using System.Diagnostics;
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Represents a Hdf5 ID to identify Hdf5 objects.

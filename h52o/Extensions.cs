@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace H5Ohm.Extensions
+namespace H52O.Extensions
 {
     public static class EnumerableExtensions
     {

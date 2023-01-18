@@ -5,7 +5,7 @@ using System.CodeDom.Compiler;
 
 using Xunit;
 
-using H5Ohm;
+using H52O;
 
 namespace TestUtils
 {

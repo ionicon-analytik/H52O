@@ -24,10 +24,10 @@ using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-using H5Ohm.Extensions;
+using H52O.Extensions;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Base class for all persistent Objects.

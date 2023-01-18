@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;   // Marshal.PtrToString
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Contains the Hdf5 hierarchy of datasets and a sub-Groups.

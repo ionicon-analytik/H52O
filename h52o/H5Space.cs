@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     public class H5Space : H5Base
     {

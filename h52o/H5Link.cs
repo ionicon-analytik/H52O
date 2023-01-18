@@ -24,7 +24,7 @@ using System.Collections.Generic;  // KeyNotFoundException
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     public class H5Link
     {

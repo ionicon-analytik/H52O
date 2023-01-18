@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("H5Ohm")]
+[assembly: AssemblyTitle("H52O")]
 [assembly: AssemblyDescription("HDF5 Object - hierarchy mapper")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]

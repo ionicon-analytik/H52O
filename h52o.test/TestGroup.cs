@@ -7,10 +7,10 @@ using Xunit;
 
 using TestUtils;
 
-using H5Ohm;
+using H52O;
 
 
-namespace H5Ohm.Test
+namespace H52O.Test
 {
     class MyObject : H5Object          // outline a test-object with some fields..
     {

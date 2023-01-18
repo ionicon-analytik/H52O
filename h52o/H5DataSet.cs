@@ -28,10 +28,10 @@ using System.Threading.Tasks;
 
 using HDF.PInvoke;
 
-using H5Ohm.Extensions;
+using H52O.Extensions;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Container for multidimensional generic Data. 

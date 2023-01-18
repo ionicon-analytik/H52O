@@ -25,7 +25,7 @@ using System.Runtime.InteropServices;   // GCHandle
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// A small annotation to a hdf5 group or dataset.

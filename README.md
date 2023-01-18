@@ -1,11 +1,30 @@
-[![Build Status](https://travis-ci.com/lefi7z/h5ohm.svg?branch=master)](https://travis-ci.com/lefi7z/h5ohm)
-
-H5Ohm - the Object to Hierarchy Mapper
+H52O - map HDF5 files to .NET Objects
 =========================
 
 Turn concise `.NET` code like this...
 
-![code example](Examples/example1_code.jpg)
+```cs
+    class MyObject : H5Object
+    {
+        [Shape(200, 5)]
+        public dset2d<double> temperatureReading;
+
+        [Shape(200)]
+        public dset1d<long> timestamps;
+
+        [Shape(5)]
+        public string1d cityNames;
+
+        public MyObject(H5Group location)
+            : base(location)
+        {
+            cityNames.Values = new string[] {
+                "Chicago", "New York", "San Francisco",
+                "Springfield, Nebraska", "New Berlin",
+            };
+        }
+    }
+```
 
 ...into a HDF5 file structure like this:
 
@@ -15,14 +34,14 @@ The [HDF group](https://portal.hdfgroup.org/display/knowledge/What+is+HDF5)
 publishes the specification for the hierarchical data format, a file format
 well suited to store huge amounts of binary data in a structured way. 
 
-`H5Ohm` attempts to tick all of the [boxes](https://github.com/HDFGroup/HDF.PInvoke/wiki/Must-Have's-for-High-Level-.NET-APIs)
+`H52O` attempts to tick all of the [boxes](https://github.com/HDFGroup/HDF.PInvoke/wiki/Must-Have's-for-High-Level-.NET-APIs)
 that one wants from a `.NET` class library:
 
 - [x] provide `numpy`-like arrays and `dtype`-like data type objects
 - [x] throw Exceptions
 - [x] handle `C` `string` as easy as `.NET` `string`
 - [x] manage immutable identifiers under the hood
-- [x] there's even basic `LINQ` support
+- [x] there's basic `LINQ` support
 
 Libraries for `C/C++` are officially maintained, but for `C#` there are no
 official bindings that feel native to the language. This project builds on
@@ -42,7 +61,7 @@ using (H5File hf = H5File.Open(myfile, mode: "r"))
 }
 ```
 
-`H5Ohm` builds with VisualStudio under Windows and also under Linux using
+`H52O` builds with VisualStudio under Windows and also under Linux using
 `msbuild` from the mono project.
 
 hdf5 version considerations
@@ -59,5 +78,5 @@ multi-read feature by adding the `sw` and `mr` file modes to the `H5File` class.
 license
 -------------------------
 
-`H5Ohm` is licensed under the MIT License. 
+`H52O` is licensed under the MIT License. 
 

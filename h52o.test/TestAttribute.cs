@@ -5,10 +5,10 @@ using Xunit;
 
 using TestUtils;
 
-using H5Ohm;
+using H52O;
 
 
-namespace H5Ohm.Test
+namespace H52O.Test
 {
     public class TestAttribute
     {

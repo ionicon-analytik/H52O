@@ -42,9 +42,9 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\h5ohm\H5Ohm.csproj">
+    <ProjectReference Include="..\h52o\H52O.csproj">
       <Project>{6c0193fd-7fc9-4447-b3e1-a894a17163c3}</Project>
-      <Name>H5Ohm</Name>
+      <Name>H52O</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

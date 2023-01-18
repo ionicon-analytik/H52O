@@ -22,7 +22,7 @@ using System;
 using System.Diagnostics;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Base class from which all H5-objects are derived.

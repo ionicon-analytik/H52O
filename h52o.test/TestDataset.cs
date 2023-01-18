@@ -7,11 +7,11 @@ using Xunit;
 
 using TestUtils;
 
-using H5Ohm;
-using H5Ohm.Extensions;
+using H52O;
+using H52O.Extensions;
 
 
-namespace H5Ohm.Test
+namespace H52O.Test
 {
     public partial class TestDataset
     {

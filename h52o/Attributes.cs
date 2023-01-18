@@ -21,7 +21,7 @@
 using System;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Set an alternative key for this dataset.

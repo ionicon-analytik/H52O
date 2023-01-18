@@ -9,7 +9,7 @@
     <ProjectGuid>{6C0193FD-7FC9-4447-B3E1-A894A17163C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>H5Ohm</AssemblyName>
+    <AssemblyName>H52O</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -36,7 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>H5Ohm</RootNamespace>
+    <RootNamespace>H52O</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -52,7 +52,6 @@
     <Compile Include="H5Library.cs" />
     <Compile Include="H5Link.cs" />
     <Compile Include="H5Base.cs" />
-    <Compile Include="H5Project.cs" />
     <Compile Include="H5Space.cs" />
     <Compile Include="H5Type.cs" />
     <Compile Include="H5Object.cs" />

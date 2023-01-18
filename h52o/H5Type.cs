@@ -23,7 +23,7 @@ using System;
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     public class H5Type : H5Base
     {

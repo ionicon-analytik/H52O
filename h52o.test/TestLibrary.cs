@@ -2,7 +2,7 @@
 
 using Xunit;
 
-using H5Ohm;
+using H52O;
 
 // Running tests in parallel causes issues with the hdf5-library, 
 // because it holds global file handles that prevent temporary
@@ -11,7 +11,7 @@ using H5Ohm;
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 
 
-namespace H5Ohm.Test
+namespace H52O.Test
 {
     public class TestLibrary
     {

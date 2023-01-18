@@ -24,7 +24,7 @@ using System.IO;
 using HDF.PInvoke;
 
 
-namespace H5Ohm
+namespace H52O
 {
     /// <summary>
     /// Represents a Hdf5 file on disk, which contains the Root-Group.

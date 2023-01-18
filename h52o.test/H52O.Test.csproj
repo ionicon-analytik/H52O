@@ -6,7 +6,7 @@
     <ProjectGuid>{AE1F0AA7-ED81-4D5D-B898-05E97DBD92C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>H5Ohm.Test</AssemblyName>
+    <AssemblyName>H52O.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -33,7 +33,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>H5Ohm.Test</RootNamespace>
+    <RootNamespace>H52O.Test</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -61,9 +61,9 @@
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\h5ohm\H5Ohm.csproj">
+    <ProjectReference Include="..\h52o\H52O.csproj">
       <Project>{6c0193fd-7fc9-4447-b3e1-a894a17163c3}</Project>
-      <Name>H5Ohm</Name>
+      <Name>H52O</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
