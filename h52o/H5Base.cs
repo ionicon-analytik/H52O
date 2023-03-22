@@ -37,6 +37,8 @@ namespace H52O
 
         protected H5Base(hid_t hid)
         {
+            H5Library.ResolvePathToExternalDependencies();
+
             if ((ID = hid) < 0)
                 throw new H5LibraryException($"{this.GetType()} :: invalid hid_t ({ID})");
 

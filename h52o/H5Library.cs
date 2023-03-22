@@ -19,8 +19,10 @@
 * SOFTWARE.
 */
 using System;
+using System.Configuration;
 using System.Diagnostics;
-
+using System.IO;
+using System.Security;
 using HDF.PInvoke;
 
 
@@ -162,5 +164,55 @@ namespace H52O
 #endif
             Debug.WriteLine("closing hdf5 library... goodbye.");
         }
+
+        // Note: The following is copy'n'pasted from the HDF.Pinvoke library, because
+        //  calling this function there seems to have no effect. Adds ./bin64 to PATH:
+
+        internal static void ResolvePathToExternalDependencies()
+        {
+            GetDllPathFromAssembly(out string NativeDllPath);
+
+            AddPathStringToEnvironment(NativeDllPath);
+        }
+
+        private static string GetAssemblyName()
+        {
+            string myPath = new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).AbsolutePath;
+            myPath = Uri.UnescapeDataString(myPath);
+            return myPath;
+        }
+
+        private static void GetDllPathFromAssembly(out string aPath)
+        {
+            switch (IntPtr.Size)
+            {
+                case 8:
+                    aPath = Path.Combine(Path.GetDirectoryName(GetAssemblyName()), "bin64");
+                    break;
+                case 4:
+                    aPath = Path.Combine(Path.GetDirectoryName(GetAssemblyName()), "bin32");
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private static void AddPathStringToEnvironment(string aPath)
+        {
+            try
+            {
+                string EnvPath = Environment.GetEnvironmentVariable("PATH");
+                if (EnvPath.Contains(aPath))
+                    return;
+
+                Environment.SetEnvironmentVariable("PATH", aPath + ";" + EnvPath);
+                Trace.WriteLine(string.Format("{0} added to Path.", aPath));
+            }
+            catch (SecurityException)
+            {
+                Trace.TraceError("Changing PATH not allowed");
+            }
+        }
+
     }
 }

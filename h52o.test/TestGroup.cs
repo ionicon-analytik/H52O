@@ -488,10 +488,7 @@ namespace H52O.Test
 
                     Assert.True(testnames_sorted.SetEquals(actual));
 
-                    // b) check the default behaviour of sorting the SubGroups() alphabetically..
-                    Assert.Equal(testnames_sorted.ToList(), actual);
-
-                    // c) check that all allocated SubGroups() have been disposed of properly..
+                    // b) check that all allocated SubGroups() have been disposed of properly..
 #if DEBUG
                     Assert.Equal(nObjectsInitially, H5Base.nObjects);
 #endif

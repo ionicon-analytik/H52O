@@ -69,6 +69,8 @@ namespace H52O
         /// </remarks>
         public static H5File Open(string path, string mode)
         {
+            H5Library.ResolvePathToExternalDependencies();
+
             if (!File.Exists(path))
             {
                 if (mode == "r" || mode == "r+" || mode == "sw" || mode == "mr")
