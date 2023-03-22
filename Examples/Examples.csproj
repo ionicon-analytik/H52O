@@ -42,16 +42,16 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\h52o\H52O.csproj">
-      <Project>{6c0193fd-7fc9-4447-b3e1-a894a17163c3}</Project>
-      <Name>H52O</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\H52O\H52O.csproj">
+      <Project>{5fffdc24-12ed-43fe-9757-beb73b681687}</Project>
+      <Name>H52O</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
